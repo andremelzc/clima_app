@@ -6,13 +6,13 @@ import axios from "axios";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT ?? 3000;
+const PORT_BACKEND = process.env.PORT_BACKEND ?? 3000;
 const apiKey = process.env.OPENWEATHER_API_KEY;
 
 app.use(cors());
 
-app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
+app.listen(PORT_BACKEND, () => {
+  console.log(`Server is running at http://localhost:${PORT_BACKEND}`);
 });
 
 app.get("/", (req, res) => {
