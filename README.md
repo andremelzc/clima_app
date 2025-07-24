@@ -24,8 +24,6 @@ This project uses the following APIs provided by **OpenWeather**:
 2. **[5 Day / 3 Hour Forecast API](https://openweathermap.org/forecast5)**  
    Provides forecast data in 3-hour intervals, covering up to 5 days ahead.
 
-3. **[Geocoding API](https://openweathermap.org/api/geocoding-api)**  
-   Converts location names (e.g., city names) into geographic coordinates (latitude and longitude), and vice versa — useful for user searches and map-based features.
 
 ## Installation and Usage
 
