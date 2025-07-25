@@ -28,6 +28,23 @@ export default function SearchBar() {
     setIsOpen(true);
   };
 
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+    if (event.target.value.trim() === "") {
+      setIsOpen(false);
+    } else {
+      setIsOpen(true);
+    }
+  };
+
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      window.history.replaceState({}, "", window.location.pathname);
+      return;
+    }
+    window.history.replaceState({}, "", `?q=${encodeURIComponent(searchQuery)}`);
+  }, [searchQuery]);
+
   return (
     <>
       {/* Overlay de fondo oscuro */}
@@ -38,10 +55,11 @@ export default function SearchBar() {
           <form>
             <Search className="absolute left-4 text-white" />
             <input
-              type="text"
+              type="search"
               placeholder="Buscar la ciudad que desees!"
               className="w-full text-sm bg-transparent focus:outline-none pl-12"
               aria-label="Buscar ciudad"
+              onChange={handleSearch}
               onFocus={handleInputFocus}
             />
           </form>
@@ -49,9 +67,14 @@ export default function SearchBar() {
         {isOpen && (
           <div className="absolute top-full left-0 right-0 bg-white shadow-lg rounded-lg mt-2 w-full max-w-4xl p-4">
             {searchQuery.trim() === "" ? (
-              <div className="w-full flex items-center justify-center p-4 text-gray-600 gap-2">
-                <Globe className="w-5 h-5 text-gray-600" />
-                <p className="text-center font-bold">Escribe el nombre de tu ciudad</p>
+              <div className="w-full flex flex-col items-center justify-center p-6 text-gray-500">
+                <Globe className="w-6 h-6 text-gray-400 mb-3" />
+                <p className="text-sm font-medium text-gray-600">
+                  Escribe el nombre de tu ciudad
+                </p>
+                <p className="text-xs text-gray-400 mt-1">
+                  Busca cualquier ciudad del mundo
+                </p>
               </div>
             ) : null}
           </div>

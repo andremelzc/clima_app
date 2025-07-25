@@ -87,3 +87,38 @@ app.get("/api/forecast", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch forecast data" });
   }
 });
+
+app.get("/api/cities/search", async (req, res) => {
+  const query = req.query.q as string;
+  const cities = require("./data/city.list.json");
+
+  if (!query) {
+    return res.status(400).json({ error: "Query parameter 'q' is required" });
+  }
+
+  const filteredCities = cities
+    .filter((city: { name: string }) =>
+      city.name.toLowerCase().startsWith(query.toLowerCase())
+    )
+    .sort((a: any, b: any) => {
+      // Priorizar coincidencias exactas
+      const aExact = a.name.toLowerCase() === query.toLowerCase();
+      const bExact = b.name.toLowerCase() === query.toLowerCase();
+
+      if (aExact && !bExact) return -1;
+      if (!aExact && bExact) return 1;
+
+      // Luego por longitud (más corto = más relevante)
+      return a.name.length - b.name.length;
+    })
+    // Eliminar duplicados basado en nombre + país
+    .filter((city: any, index: number, array: any[]) => 
+      array.findIndex(c => 
+        c.name.toLowerCase() === city.name.toLowerCase() && 
+        c.country === city.country
+      ) === index
+    )
+    .slice(0, 10);
+
+  res.json(filteredCities);
+});
