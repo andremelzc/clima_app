@@ -1,5 +1,6 @@
 import { useState } from "react";
 import MainCard from "../components/MainCard";
+import SearchBar from "../components/SearchBar";
 
 export default function Home() {
   const [clima, setClima] = useState("cold");
@@ -24,7 +25,8 @@ export default function Home() {
       <div
         className={`${backgrounds[clima]} h-screen w-screen flex items-center justify-center relative`}
       >
-        <div className="w-full flex items-center justify-center">
+        <div className="w-full flex flex-col items-center justify-center gap-4">
+          <SearchBar />
           <MainCard />
         </div>
       </div>

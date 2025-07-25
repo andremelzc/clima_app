@@ -25,7 +25,7 @@ export default function MainCard() {
   }, []);
 
   return (
-    <div className="w-full max-w-4xl bg-gradient-to-br from-white/5 to-white/15 opacity-75 p-10 shadow-md rounded-lg backdrop-blur-md">
+    <div className="w-full max-w-4xl bg-gradient-to-br from-white/5 to-white/15 opacity-75 p-10 shadow-md rounded-xl backdrop-blur-md">
       {/* Location and Time */}
       <div className="absolute flex flex-col items-start">
         <div>
