@@ -4,6 +4,9 @@ import SearchBar from "../components/SearchBar";
 
 export default function Home() {
   const [clima, setClima] = useState("cold");
+  const [dataSelected, setDataSelected] = useState({ city: "Lima", country: "PE" });
+
+  console.log("Home - dataSelected:", dataSelected); // Debug log
 
   const backgrounds: Record<string, string> = {
     // Temperatura (para días despejados)
@@ -26,8 +29,12 @@ export default function Home() {
         className={`${backgrounds[clima]} h-screen w-screen flex items-center justify-center relative`}
       >
         <div className="w-full flex flex-col items-center justify-center gap-4">
-          <SearchBar />
-          <MainCard />
+          <SearchBar
+            setDataSelected={setDataSelected}
+          />
+          <MainCard
+            dataSelected={dataSelected}
+          />
         </div>
       </div>
     </>

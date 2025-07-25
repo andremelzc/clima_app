@@ -1,8 +1,12 @@
-import React, { useState, useRef, useEffect, use } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Search, Globe, MapPin } from "lucide-react";
 import { getCities } from "../services/cityApi";
 
-export default function SearchBar() {
+interface SearchBarProps {
+  setDataSelected: (data: { city: string; country: string }) => void;
+}
+
+export default function SearchBar({ setDataSelected }: SearchBarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -30,10 +34,16 @@ export default function SearchBar() {
     setIsOpen(true);
   };
 
-  const handleCitySelect = (city: { name: string; country: string}) => {
+  const handleCitySelect = (city: { name: string; country: string }) => {
     console.log("Selected city:", city);
+    console.log("Setting dataSelected to:", { city: city.name, country: city.country });
     setIsOpen(false);
-  }
+    setSearchQuery(city.name); // Actualizar el input con la ciudad seleccionada
+    setDataSelected({
+      city: city.name,
+      country: city.country,
+    });
+  };
 
   const searchCities = async (query: string) => {
     if (query.trim().length < 2) {

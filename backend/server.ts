@@ -26,8 +26,8 @@ app.get("/api/weather", async (req, res) => {
   }
 
   // 2. Check if the parameters are provided
-  const city = req.query.city ?? "Lima";
-  const country = req.query.country ?? "PE";
+  const city = req.query.city;
+  const country = req.query.country;
 
   if (!city || !country) {
     return res.status(400).json({ error: "City and country are required" });

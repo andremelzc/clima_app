@@ -1,16 +1,36 @@
 import { useState, useEffect } from "react";
 import DetailCard from "./DetailCard";
-import { MapPin, Sunrise, Sunset, Droplets, Wind, Gauge, Eye } from "lucide-react";
+import {
+  MapPin,
+  Sunrise,
+  Sunset,
+  Droplets,
+  Wind,
+  Gauge,
+  Eye,
+} from "lucide-react";
 import { getCurrentWeather, convertUnixToDate } from "../services/weatherApi";
 
-export default function MainCard() {
+interface MainCardProps {
+  dataSelected: { city: string; country: string };
+}
+
+export default function MainCard({ dataSelected }: MainCardProps) {
   const [weatherData, setWeatherData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
+  console.log("MainCard - dataSelected changed:", dataSelected); // Debug log
+
   const fetchWeatherData = async () => {
+    // No hacer fetch si no hay ciudad seleccionada
+    if (!dataSelected.city || !dataSelected.country) {
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
-      const data = await getCurrentWeather("Lima", "PE");
+      const data = await getCurrentWeather(dataSelected.city, dataSelected.country);
       setWeatherData(data);
       console.log("Weather data:", data);
     } catch (error) {
@@ -22,7 +42,7 @@ export default function MainCard() {
 
   useEffect(() => {
     fetchWeatherData();
-  }, []);
+  }, [dataSelected]);
 
   return (
     <div className="w-full max-w-4xl bg-gradient-to-br from-white/5 to-white/15 opacity-75 p-10 shadow-md rounded-xl backdrop-blur-md">
