@@ -41,6 +41,7 @@ app.get("/api/weather", async (req, res) => {
         params: {
           q: `${city},${country}`,
           appid: apiKey,
+          lang: "es",
           units: "metric",
         },
       }
@@ -74,6 +75,7 @@ app.get("/api/forecast", async (req, res) => {
         params: {
           q: `${city},${country}`,
           appid: apiKey,
+          lang: "es",
           units: "metric",
         },
       }
