@@ -10,3 +10,11 @@ export const getCurrentWeather = async (city: string, country: string) => {
   }
   return response.json();
 };
+
+export const convertUnixToDate = (unixTimeStamp: number) => {
+  const date = new Date(unixTimeStamp * 1000);
+  return date.toLocaleTimeString("es-PE", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};

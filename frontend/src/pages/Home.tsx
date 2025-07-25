@@ -1,4 +1,5 @@
 import { useState } from "react";
+import MainCard from "../components/MainCard";
 
 export default function Home() {
   const [clima, setClima] = useState("cold");
@@ -24,8 +25,7 @@ export default function Home() {
         className={`${backgrounds[clima]} h-screen w-screen flex items-center justify-center relative`}
       >
         <div className="text-center">
-          <h1 className="text-6xl font-bold text-white">
-          </h1>
+          <MainCard />
         </div>
       </div>
     </>
