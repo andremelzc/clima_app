@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import DetailCard from "./DetailCard";
-import { MapPin } from "lucide-react";
+import { MapPin, Sunrise, Sunset, Droplets, Wind, Gauge, Eye } from "lucide-react";
 import { getCurrentWeather, convertUnixToDate } from "../services/weatherApi";
 
 export default function MainCard() {
@@ -25,7 +25,23 @@ export default function MainCard() {
   }, []);
 
   return (
-    <div className="bg-gradient-to-br from-white/5 to-white/20 opacity-75 p-8 shadow-md rounded-lg backdrop-blur-md">
+    <div className="w-full max-w-4xl bg-gradient-to-br from-white/5 to-white/15 opacity-75 p-10 shadow-md rounded-lg backdrop-blur-md">
+      {/* Location and Time */}
+      <div className="absolute flex flex-col items-start">
+        <div>
+          <span>22:54</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <MapPin size={14} color="white" />
+          <span className="text-white text-sm">
+            {loading
+              ? "Loading..."
+              : `${weatherData?.name || "Lima"}, ${
+                  weatherData?.sys?.country || "PE"
+                }`}
+          </span>
+        </div>
+      </div>
       {/* Main weather */}
       <div className="p-8 flex items-center justify-center gap-4">
         {/* Icon weather */}
@@ -34,9 +50,9 @@ export default function MainCard() {
             <span className="text-white">Loading...</span>
           ) : (
             <img
-              src={`http://openweathermap.org/img/wn/${weatherData?.weather[0]?.icon}@2x.png`}
+              src={`http://openweathermap.org/img/wn/${weatherData?.weather[0]?.icon}@4x.png`}
               alt={weatherData?.weather[0]?.description}
-              className="w-20 h-20"
+              className="w-32 h-32 drop-shadow-lg filter brightness-110 contrast-110"
             />
           )}
         </div>
@@ -45,54 +61,51 @@ export default function MainCard() {
           <div className="text-8xl font-thin text-white">
             {loading ? "..." : `${Math.round(weatherData?.main?.temp || 0)}°`}
           </div>
-          <div>
-            {loading ? "..." : weatherData?.weather[0]?.main || "Desconocido"}
+          <div className="capitalize text-white text-lg font-semibold">
+            {loading
+              ? "..."
+              : weatherData?.weather[0]?.description || "Desconocido"}
           </div>
-          <div>
+          <div className="text-white text-xs">
             {loading
               ? "..."
               : `Sensación térmica ${Math.round(
                   weatherData?.main?.feels_like || 0
                 )}°`}
           </div>
-
-          <div className="flex items-center gap-2 text-sm">
-            <MapPin size={14} color="white" />
-            <span className="text-white text-sm">
-              {loading
-                ? "Loading..."
-                : `${weatherData?.name || "Lima"}, ${
-                    weatherData?.sys?.country || "PE"
-                  }`}
-            </span>
-          </div>
         </div>
       </div>
       {/* Weather details */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-5">
         <DetailCard
           characteristic="Amanecer"
           value={convertUnixToDate(weatherData?.sys?.sunrise)}
+          icon={<Sunrise size={16} />}
         />
         <DetailCard
           characteristic="Atardecer"
           value={convertUnixToDate(weatherData?.sys?.sunset)}
+          icon={<Sunset size={16} />}
         />
         <DetailCard
           characteristic="Humedad"
           value={`${weatherData?.main?.humidity || 0}%`}
+          icon={<Droplets size={16} />}
         />
         <DetailCard
           characteristic="Viento"
           value={`${weatherData?.wind?.speed || 0} m/s`}
+          icon={<Wind size={16} />}
         />
         <DetailCard
           characteristic="Presión"
           value={`${weatherData?.main?.pressure || 0} hPa`}
+          icon={<Gauge size={16} />}
         />
         <DetailCard
           characteristic="Visibilidad"
           value={`${weatherData?.visibility || 0} m`}
+          icon={<Eye size={16} />}
         />
       </div>
     </div>

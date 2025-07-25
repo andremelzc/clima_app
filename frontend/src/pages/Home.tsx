@@ -24,7 +24,7 @@ export default function Home() {
       <div
         className={`${backgrounds[clima]} h-screen w-screen flex items-center justify-center relative`}
       >
-        <div className="text-center">
+        <div className="w-full flex items-center justify-center">
           <MainCard />
         </div>
       </div>
