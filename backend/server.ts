@@ -118,7 +118,7 @@ app.get("/api/cities/search", async (req, res) => {
         c.country === city.country
       ) === index
     )
-    .slice(0, 10);
+    .slice(0, 8);
 
   res.json(filteredCities);
 });
