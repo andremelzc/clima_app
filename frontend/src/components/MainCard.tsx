@@ -19,8 +19,6 @@ export default function MainCard({ dataSelected }: MainCardProps) {
   const [weatherData, setWeatherData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  console.log("MainCard - dataSelected changed:", dataSelected); // Debug log
-
   const fetchWeatherData = async () => {
     // No hacer fetch si no hay ciudad seleccionada
     if (!dataSelected.city || !dataSelected.country) {
@@ -45,7 +43,7 @@ export default function MainCard({ dataSelected }: MainCardProps) {
   }, [dataSelected]);
 
   return (
-    <div className="w-full max-w-4xl bg-gradient-to-br from-white/5 to-white/15 opacity-75 p-10 shadow-md rounded-xl backdrop-blur-md">
+    <div className="w-full max-w-5xl bg-gradient-to-br from-white/5 to-white/15 opacity-75 p-8 shadow-md rounded-xl backdrop-blur-md">
       {/* Location and Time */}
       <div className="absolute flex flex-col items-start">
         <div>
@@ -96,7 +94,7 @@ export default function MainCard({ dataSelected }: MainCardProps) {
         </div>
       </div>
       {/* Weather details */}
-      <div className="grid grid-cols-3 gap-5">
+      <div className="grid grid-cols-3 gap-6">
         <DetailCard
           characteristic="Amanecer"
           value={convertUnixToDate(weatherData?.sys?.sunrise)}

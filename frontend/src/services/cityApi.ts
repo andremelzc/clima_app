@@ -9,3 +9,13 @@ export const getCities = async (query: string) => {
   }
   return response.json();
 };
+
+export const getTimezone = async (lat: number, lon: number) => {
+  const response = await fetch(
+    `${API_BASE}/api/timezone?lat=${lat}&lon=${lon}`
+  );
+  if (!response.ok) {
+    throw new Error("Failed to fetch timezone data");
+  }
+  return response.json();
+};

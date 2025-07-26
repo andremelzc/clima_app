@@ -98,7 +98,7 @@ export default function SearchBar({ setDataSelected }: SearchBarProps) {
       {/* Overlay de fondo oscuro */}
       {isOpen && <div className="fixed inset-0 backdrop-blur-sm z-40" />}
 
-      <div className="w-full max-w-4xl relative z-50" ref={dropdownRef}>
+      <div className="w-full max-w-5xl relative z-50" ref={dropdownRef}>
         <div className="w-full max-w-4xl bg-gradient-to-br from-white/5 to-white/15 opacity-75 p-2 shadow-md rounded-xl backdrop-blur-lg">
           <form>
             <Search className="absolute left-4 text-white" />

@@ -112,13 +112,41 @@ app.get("/api/cities/search", async (req, res) => {
       return a.name.length - b.name.length;
     })
     // Eliminar duplicados basado en nombre + país
-    .filter((city: any, index: number, array: any[]) => 
-      array.findIndex(c => 
-        c.name.toLowerCase() === city.name.toLowerCase() && 
-        c.country === city.country
-      ) === index
+    .filter(
+      (city: any, index: number, array: any[]) =>
+        array.findIndex(
+          (c) =>
+            c.name.toLowerCase() === city.name.toLowerCase() &&
+            c.country === city.country
+        ) === index
     )
     .slice(0, 8);
 
   res.json(filteredCities);
+});
+
+app.get("/api/timezone", async (req, res) => {
+  const lat = req.query.lat;
+  const lon = req.query.lon;
+
+  if (!lat || !lon) {
+    return res.status(400).json({ error: "Latitude and longitude are required" });
+  }
+
+  try {
+    const response = await axios.get(`http://api.timezonedb.com/v2.1/get-time-zone`, {
+      params: {
+        key: process.env.TIMEZONE_API_KEY,
+        format: "json",
+        by: "position",
+        lat: lat,
+        lng: lon,
+      },
+    });
+
+    res.json(response.data);
+  } catch (error: any) {
+    console.error("Error fetching timezone data:", error.message);
+    res.status(500).json({ error: "Failed to fetch timezone data" });
+  }
 });
