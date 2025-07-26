@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import DetailCard from "./DetailCard";
 import {
   MapPin,
@@ -10,15 +10,31 @@ import {
   Eye,
 } from "lucide-react";
 import { getCurrentWeather, convertUnixToDate } from "../services/weatherApi";
+import { getTimezone } from "../services/cityApi";
 
 interface MainCardProps {
-  dataSelected: { city: string; country: string };
+  dataSelected: { city: string; country: string; lat: number; lon: number };
+}
+
+interface TimezoneData {
+  status: string;
+  gmtOffset: number;
+  zoneName: string;
+  formatted: string;
+  timestamp: number;
 }
 
 export default function MainCard({ dataSelected }: MainCardProps) {
   const [weatherData, setWeatherData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [currentTime, setCurrentTime] = useState<string>("");
+  const [currentDate, setCurrentDate] = useState<string>("");
 
+  const timeIntervalRef = useRef<number | null>(null);
+  const timezoneDataRef = useRef<TimezoneData | null>(null);
+
+
+  // 1. Función para obtener el clima de una ciudad
   const fetchWeatherData = async () => {
     // No hacer fetch si no hay ciudad seleccionada
     if (!dataSelected.city || !dataSelected.country) {
@@ -28,7 +44,10 @@ export default function MainCard({ dataSelected }: MainCardProps) {
 
     try {
       setLoading(true);
-      const data = await getCurrentWeather(dataSelected.city, dataSelected.country);
+      const data = await getCurrentWeather(
+        dataSelected.city,
+        dataSelected.country
+      );
       setWeatherData(data);
       console.log("Weather data:", data);
     } catch (error) {
@@ -38,16 +57,84 @@ export default function MainCard({ dataSelected }: MainCardProps) {
     }
   };
 
+  // 2. Función para obtener la zona horaria de la ciudad seleccionada
+  const initializeTimezone = async () => {
+    if (!dataSelected) return;
+
+    try {
+      const timezoneData = await getTimezone(
+        dataSelected.lat,
+        dataSelected.lon
+      );
+
+      if (timezoneData.status === "OK") {
+        timezoneDataRef.current = timezoneData;
+        updateCurrentTime(); // Actualizar inmediatamente
+        
+        // Limpiar intervalo anterior si existe
+        if (timeIntervalRef.current) {
+          clearInterval(timeIntervalRef.current);
+        }
+        
+        // Configurar nuevo intervalo para actualizar cada segundo
+        timeIntervalRef.current = setInterval(updateCurrentTime, 1000);
+      }
+    } catch (error) {
+      console.error("Error getting timezone:", error);
+    }
+  };
+
+  // 3. Función para actualizar la hora actual de la ciudad
+  const updateCurrentTime = () => {
+    if (!timezoneDataRef.current) return;
+    
+    const now = new Date();
+    const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+    const cityTime = new Date(utc + (timezoneDataRef.current.gmtOffset * 1000));
+    
+    // Formatear hora (HH:MM)
+    const timeString = cityTime.toLocaleTimeString("es-ES", {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+    
+    // Formatear fecha (DD/MM/YY)
+    const dateString = cityTime.toLocaleDateString("es-ES", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "2-digit"
+    });
+    
+    setCurrentTime(timeString);
+    setCurrentDate(dateString);
+  };
+
+  // 4. Limpiar interval al desmontar el componente
+  useEffect(() => {
+    return () => {
+      if (timeIntervalRef.current) {
+        clearInterval(timeIntervalRef.current);
+      }
+    };
+  }, []);
+
+  // 5. Actualizar cada que se selecciona una nueva ciudad
   useEffect(() => {
     fetchWeatherData();
+    initializeTimezone();
   }, [dataSelected]);
 
   return (
     <div className="w-full max-w-5xl bg-gradient-to-br from-white/5 to-white/15 opacity-75 p-8 shadow-md rounded-xl backdrop-blur-md">
       {/* Location and Time */}
       <div className="absolute flex flex-col items-start">
-        <div>
-          <span>22:54</span>
+        <div className="flex items-center gap-2 mb-1">
+          <span className="text-white text-lg font-semibold">
+            {currentTime || "..."}
+          </span>
+          <span className="text-white/80 text-sm">
+            {currentDate || "..."}
+          </span>
         </div>
         <div className="flex items-center gap-2">
           <MapPin size={14} color="white" />

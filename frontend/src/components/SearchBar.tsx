@@ -3,7 +3,7 @@ import { Search, Globe, MapPin } from "lucide-react";
 import { getCities } from "../services/cityApi";
 
 interface SearchBarProps {
-  setDataSelected: (data: { city: string; country: string }) => void;
+  setDataSelected: (data: { city: string; country: string; lat: number; lon: number }) => void;
 }
 
 export default function SearchBar({ setDataSelected }: SearchBarProps) {
@@ -34,7 +34,7 @@ export default function SearchBar({ setDataSelected }: SearchBarProps) {
     setIsOpen(true);
   };
 
-  const handleCitySelect = (city: { name: string; country: string }) => {
+  const handleCitySelect = (city: { name: string; country: string; coord: { lat: number; lon: number } }) => {
     console.log("Selected city:", city);
     console.log("Setting dataSelected to:", { city: city.name, country: city.country });
     setIsOpen(false);
@@ -42,6 +42,14 @@ export default function SearchBar({ setDataSelected }: SearchBarProps) {
     setDataSelected({
       city: city.name,
       country: city.country,
+      lat: city.coord.lat,
+      lon: city.coord.lon,
+    });
+    console.log("Data selected updated:", { 
+      city: city.name, 
+      country: city.country, 
+      lat: city.coord.lat, 
+      lon: city.coord.lon 
     });
   };
 

@@ -4,7 +4,7 @@ import SearchBar from "../components/SearchBar";
 
 export default function Home() {
   const [clima, setClima] = useState("cold");
-  const [dataSelected, setDataSelected] = useState({ city: "Lima", country: "PE" });
+  const [dataSelected, setDataSelected] = useState({ city: "Lima", country: "PE", lat: -12.0464, lon: -77.0428 });
 
   console.log("Home - dataSelected:", dataSelected); // Debug log
 
