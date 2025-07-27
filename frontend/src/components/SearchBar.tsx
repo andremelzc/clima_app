@@ -106,8 +106,8 @@ export default function SearchBar({ setDataSelected }: SearchBarProps) {
       {/* Overlay de fondo oscuro */}
       {isOpen && <div className="fixed inset-0 backdrop-blur-sm z-40" />}
 
-      <div className="w-full max-w-5xl relative z-50" ref={dropdownRef}>
-        <div className="w-full max-w-4xl bg-gradient-to-br from-white/5 to-white/15 opacity-75 p-2 shadow-md rounded-xl backdrop-blur-lg">
+      <div className="flex-1 relative z-50" ref={dropdownRef}>
+        <div className="w-full bg-gradient-to-br from-white/5 to-white/15 opacity-75 p-2 shadow-md rounded-xl backdrop-blur-lg">
           <form>
             <Search className="absolute left-4 text-white" />
             <input
@@ -121,7 +121,7 @@ export default function SearchBar({ setDataSelected }: SearchBarProps) {
           </form>
         </div>
         {isOpen && (
-          <div className="absolute top-full left-0 right-0 bg-white shadow-lg rounded-lg mt-2 w-full max-w-4xl p-4">
+          <div className="absolute top-full left-0 right-0 bg-white shadow-lg rounded-lg mt-2 w-full p-4">
             {searchQuery.trim() === "" ? (
               <div className="w-full flex flex-col items-center justify-center p-6 text-gray-500">
                 <Globe className="w-6 h-6 text-gray-400 mb-3" />

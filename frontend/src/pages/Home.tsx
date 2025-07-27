@@ -1,10 +1,16 @@
 import { useState } from "react";
 import MainCard from "../components/MainCard";
 import SearchBar from "../components/SearchBar";
+import UnitToggle from "../components/UnitToggle";
 
 export default function Home() {
   const [clima, setClima] = useState("cold");
-  const [dataSelected, setDataSelected] = useState({ city: "Lima", country: "PE", lat: -12.0464, lon: -77.0428 });
+  const [dataSelected, setDataSelected] = useState({
+    city: "Lima",
+    country: "PE",
+    lat: -12.0464,
+    lon: -77.0428,
+  });
 
   console.log("Home - dataSelected:", dataSelected); // Debug log
 
@@ -26,15 +32,15 @@ export default function Home() {
   return (
     <>
       <div
-        className={`${backgrounds[clima]} h-screen w-screen flex items-center justify-center relative`}
+        className={`${backgrounds[clima]} h-screen w-screen  flex items-center justify-center relative`}
       >
         <div className="w-full flex flex-col items-center justify-center gap-4">
-          <SearchBar
-            setDataSelected={setDataSelected}
-          />
-          <MainCard
-            dataSelected={dataSelected}
-          />
+          <div className="w-full max-w-5xl flex items-center justify-center gap-4">
+            <SearchBar setDataSelected={setDataSelected} />
+            <UnitToggle />
+          </div>
+
+          <MainCard dataSelected={dataSelected} />
         </div>
       </div>
     </>
