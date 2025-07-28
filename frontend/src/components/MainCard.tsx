@@ -11,9 +11,11 @@ import {
 } from "lucide-react";
 import { getCurrentWeather, convertUnixToDate } from "../services/weatherApi";
 import { getTimezone } from "../services/cityApi";
+import { convertTemperature } from "../lib/temperatureUtils";
 
 interface MainCardProps {
   dataSelected: { city: string; country: string; lat: number; lon: number };
+  isCelsius: boolean;
 }
 
 interface TimezoneData {
@@ -24,7 +26,7 @@ interface TimezoneData {
   timestamp: number;
 }
 
-export default function MainCard({ dataSelected }: MainCardProps) {
+export default function MainCard({ dataSelected, isCelsius }: MainCardProps) {
   const [weatherData, setWeatherData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [currentTime, setCurrentTime] = useState<string>("");
@@ -164,7 +166,7 @@ export default function MainCard({ dataSelected }: MainCardProps) {
         {/* Temperature and description */}
         <div className="flex flex-col items-center">
           <div className="text-8xl font-thin text-white">
-            {loading ? "..." : `${Math.round(weatherData?.main?.temp || 0)}°`}
+            {loading ? "..." : `${Math.round(convertTemperature(weatherData?.main?.temp || 0, isCelsius))}°`}
           </div>
           <div className="capitalize text-white text-lg font-semibold">
             {loading
@@ -174,9 +176,7 @@ export default function MainCard({ dataSelected }: MainCardProps) {
           <div className="text-white text-xs">
             {loading
               ? "..."
-              : `Sensación térmica ${Math.round(
-                  weatherData?.main?.feels_like || 0
-                )}°`}
+              : `Sensación térmica ${Math.round(convertTemperature(weatherData?.main?.feels_like || 0, isCelsius))}°`}
           </div>
         </div>
       </div>

@@ -1,13 +1,16 @@
-import React, { useState } from "react";
 
-export default function UnitToggle() {
-  const [isCelsius, setIsCelsius] = useState(true);
+interface UnitToggleProps {
+  isCelsius: boolean;
+  onToggle: () => void;
+}
+
+export default function UnitToggle({ isCelsius, onToggle }: UnitToggleProps) {
 
   return (
     <div className="relative">
       <button
         className="relative w-20 h-10 rounded-xl shadow-md border-0 outline-none transition-all duration-300 cursor-pointer"
-        onClick={() => setIsCelsius(!isCelsius)}
+        onClick={() => onToggle()}
         style={{
           appearance: "none",
           WebkitAppearance: "none",

@@ -5,6 +5,7 @@ import UnitToggle from "../components/UnitToggle";
 
 export default function Home() {
   const [clima, setClima] = useState("cold");
+  const [isCelsius, setIsCelsius] = useState(true);
   const [dataSelected, setDataSelected] = useState({
     city: "Lima",
     country: "PE",
@@ -37,10 +38,10 @@ export default function Home() {
         <div className="w-full flex flex-col items-center justify-center gap-4">
           <div className="w-full max-w-5xl flex items-center justify-center gap-4">
             <SearchBar setDataSelected={setDataSelected} />
-            <UnitToggle />
+            <UnitToggle isCelsius={isCelsius} onToggle={() => setIsCelsius(!isCelsius)} />
           </div>
 
-          <MainCard dataSelected={dataSelected} />
+          <MainCard dataSelected={dataSelected} isCelsius={isCelsius} />
         </div>
       </div>
     </>
