@@ -127,11 +127,12 @@ export default function MainCard({ dataSelected, isCelsius }: MainCardProps) {
   }, [dataSelected]);
 
   return (
-    <div className="w-full max-w-3xl mx-auto bg-gradient-to-br from-white/5 to-white/15 opacity-75 p-4 sm:p-6 lg:p-8 shadow-md rounded-xl backdrop-blur-md">
+    <div className="w-full max-w-sm sm:max-w-2xl md:max-w-3xl mx-auto bg-gradient-to-br from-white/5 to-white/15 opacity-75 p-3 sm:p-4 md:p-6 lg:p-8 shadow-md rounded-xl backdrop-blur-md">
       {/* Location and Time */}
-      <div className="flex flex-col sm:flex-row sm:justify-between space-y-2 sm:space-y-0">
+      <div className="flex flex-col sm:flex-row sm:justify-between space-y-1 sm:space-y-0 mb-2 sm:mb-4">
         <div className="flex items-center gap-2">
-          <span className="text-white text-lg font-semibold">
+          <MapPin size={12} className="sm:hidden" color="white" />
+          <span className="text-white text-sm sm:text-lg font-semibold truncate">
             {loading
               ? "Loading..."
               : `${weatherData?.name || "Lima"}, ${
@@ -139,40 +140,40 @@ export default function MainCard({ dataSelected, isCelsius }: MainCardProps) {
                 }`}
           </span>
         </div>
-        <div className="flex items-center gap-2 ">
-          <span className="text-white text-lg font-semibold">
+        <div className="flex items-center gap-1 sm:gap-2">
+          <span className="text-white text-sm sm:text-lg font-semibold">
             {currentTime || "..."}
           </span>
-          <span className="text-white/80 text-sm">
+          <span className="text-white/80 text-xs sm:text-sm">
             {currentDate || "..."}
           </span>
         </div>
       </div>
       {/* Main weather */}
-      <div className="p-8 flex items-center justify-center gap-4 sm:gap-6 lg:gap-8">
+      <div className="py-4 px-2 sm:p-6 lg:p-8 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 lg:gap-6">
         {/* Icon weather */}
-        <div className="flex items-center">
+        <div className="flex items-center order-1 sm:order-none">
           {loading ? (
-            <span className="text-white">Loading...</span>
+            <span className="text-white text-sm">Cargando...</span>
           ) : (
             <img
               src={`http://openweathermap.org/img/wn/${weatherData?.weather[0]?.icon}@4x.png`}
               alt={weatherData?.weather[0]?.description}
-              className="w-24 h-24 sm:w-32 sm:h-32 lg:w-40 lg:h-40 drop-shadow-lg filter brightness-110 contrast-110"
+              className="w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 drop-shadow-lg filter brightness-110 contrast-110"
             />
           )}
         </div>
         {/* Temperature and description */}
-        <div className="flex flex-col items-center">
-          <div className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-thin text-white">
+        <div className="flex flex-col items-center text-center">
+          <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-thin text-white leading-none">
             {loading ? "..." : `${Math.round(convertTemperature(weatherData?.main?.temp || 0, isCelsius))}°`}
           </div>
-          <div className="capitalize text-white text-lg font-semibold">
+          <div className="capitalize text-white text-sm sm:text-base md:text-lg font-semibold mt-1">
             {loading
               ? "..."
               : weatherData?.weather[0]?.description || "Desconocido"}
           </div>
-          <div className="text-white text-xs">
+          <div className="text-white text-xs sm:text-sm mt-1">
             {loading
               ? "..."
               : `Sensación térmica ${Math.round(convertTemperature(weatherData?.main?.feels_like || 0, isCelsius))}°`}
@@ -180,36 +181,36 @@ export default function MainCard({ dataSelected, isCelsius }: MainCardProps) {
         </div>
       </div>
       {/* Weather details */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 lg:gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 md:gap-4">
         <DetailCard
           characteristic="Amanecer"
           value={convertUnixToDate(weatherData?.sys?.sunrise)}
-          icon={<Sunrise size={16} />}
+          icon={<Sunrise size={14} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
         />
         <DetailCard
           characteristic="Atardecer"
           value={convertUnixToDate(weatherData?.sys?.sunset)}
-          icon={<Sunset size={16} />}
+          icon={<Sunset size={14} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
         />
         <DetailCard
           characteristic="Humedad"
           value={`${weatherData?.main?.humidity || 0}%`}
-          icon={<Droplets size={16} />}
+          icon={<Droplets size={14} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
         />
         <DetailCard
           characteristic="Viento"
           value={`${weatherData?.wind?.speed || 0} m/s`}
-          icon={<Wind size={16} />}
+          icon={<Wind size={14} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
         />
         <DetailCard
           characteristic="Presión"
           value={`${weatherData?.main?.pressure || 0} hPa`}
-          icon={<Gauge size={16} />}
+          icon={<Gauge size={14} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
         />
         <DetailCard
           characteristic="Visibilidad"
           value={`${weatherData?.visibility || 0} m`}
-          icon={<Eye size={16} />}
+          icon={<Eye size={14} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
         />
       </div>
     </div>
