@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Navbar from "../components/Navbar";
 import MainCard from "../components/MainCard";
 import SearchBar from "../components/SearchBar";
 import UnitToggle from "../components/UnitToggle";
@@ -33,11 +34,15 @@ export default function Home() {
   return (
     <>
       <div
-        className={`${backgrounds[clima]} h-screen w-screen  flex items-center justify-center relative`}
+        className={`${backgrounds[clima]} h-screen w-screen flex items-center justify-center relative`}
       >
         <div className="w-full flex flex-col items-center justify-center gap-4">
+          <Navbar />
           <div className="w-full max-w-sm sm:max-w-2xl md:max-w-3xl flex items-center justify-center gap-4">
-            <SearchBar setDataSelected={setDataSelected} />
+            <SearchBar
+              dataSelected={dataSelected}
+              setDataSelected={setDataSelected}
+            />
             <UnitToggle
               isCelsius={isCelsius}
               onToggle={() => setIsCelsius(!isCelsius)}

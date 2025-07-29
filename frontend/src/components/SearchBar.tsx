@@ -3,10 +3,19 @@ import { Search, Globe, MapPin } from "lucide-react";
 import { getCities } from "../services/cityApi";
 
 interface SearchBarProps {
-  setDataSelected: (data: { city: string; country: string; lat: number; lon: number }) => void;
+  dataSelected: { city: string; country: string; lat: number; lon: number };
+  setDataSelected: (data: {
+    city: string;
+    country: string;
+    lat: number;
+    lon: number;
+  }) => void;
 }
 
-export default function SearchBar({ setDataSelected }: SearchBarProps) {
+export default function SearchBar({
+  dataSelected,
+  setDataSelected,
+}: SearchBarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -34,9 +43,16 @@ export default function SearchBar({ setDataSelected }: SearchBarProps) {
     setIsOpen(true);
   };
 
-  const handleCitySelect = (city: { name: string; country: string; coord: { lat: number; lon: number } }) => {
+  const handleCitySelect = (city: {
+    name: string;
+    country: string;
+    coord: { lat: number; lon: number };
+  }) => {
     console.log("Selected city:", city);
-    console.log("Setting dataSelected to:", { city: city.name, country: city.country });
+    console.log("Setting dataSelected to:", {
+      city: city.name,
+      country: city.country,
+    });
     setIsOpen(false);
     setSearchQuery(city.name); // Actualizar el input con la ciudad seleccionada
     setDataSelected({
@@ -45,11 +61,11 @@ export default function SearchBar({ setDataSelected }: SearchBarProps) {
       lat: city.coord.lat,
       lon: city.coord.lon,
     });
-    console.log("Data selected updated:", { 
-      city: city.name, 
-      country: city.country, 
-      lat: city.coord.lat, 
-      lon: city.coord.lon 
+    console.log("Data selected updated:", {
+      city: city.name,
+      country: city.country,
+      lat: city.coord.lat,
+      lon: city.coord.lon,
     });
   };
 
@@ -107,13 +123,31 @@ export default function SearchBar({ setDataSelected }: SearchBarProps) {
       {isOpen && <div className="fixed inset-0 backdrop-blur-sm z-40" />}
 
       <div className="flex-1 relative z-50" ref={dropdownRef}>
-        <div className="w-full bg-gradient-to-br from-white/5 to-white/15 opacity-75 py-2 px-3 shadow-md rounded-lg backdrop-blur-lg">
+        <div className="w-full bg-gradient-to-br from-white/5 to-white/15 opacity-75 p-2 shadow-md rounded-lg backdrop-blur-lg">
           <form>
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white w-4 h-4" />
+
+            {/* Indicador de ciudad actual mejorado */}
+            <div className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm rounded-md p-2 flex items-center gap-1 shadow-sm border border-white/20">
+              <MapPin className="text-gray-600 w-4 h-4" />
+              <span
+                className="text-sm font-medium text-gray-700 max-w-32 truncate"
+                title={`${dataSelected.city}`}
+              >
+                {dataSelected.city},
+              </span>
+              <img
+                src={`https://flagsapi.com/${dataSelected.country}/flat/64.png`}
+                alt={`Bandera de ${dataSelected.city}`}
+                className="w-5 h-5 rounded-sm shadow-lg object-cover group-hover:scale-110 transition-transform duration-300"
+                loading="lazy"
+              />
+            </div>
+
             <input
               type="search"
               placeholder="Buscar ciudad..."
-              className="w-full text-sm bg-transparent focus:outline-none pl-8 py-1"
+              className="w-full text-base bg-transparent focus:outline-none pl-8 pr-36 py-2 text-white placeholder-white/70"
               aria-label="Buscar ciudad"
               onChange={handleSearch}
               onFocus={handleInputFocus}

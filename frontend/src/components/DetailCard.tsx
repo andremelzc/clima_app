@@ -10,7 +10,7 @@ const DetailCard = ({
   icon?: React.ReactNode;
 }) => {
   return (
-    <div className="bg-[#D9D9D9] flex flex-col items-start shadow-md rounded-lg p-2 sm:p-2.5 md:p-3 hover:shadow-lg transition-shadow duration-200">
+    <div className="bg-[#D9D9D9] flex flex-col items-start shadow-md rounded-lg p-2 sm:p-2.5 hover:shadow-lg transition-shadow duration-200">
       <div className="flex items-center gap-1 sm:gap-1.5 mb-1">
         {icon && (
           <div className="text-[#7C7C7C] flex-shrink-0">
