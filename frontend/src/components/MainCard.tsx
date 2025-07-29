@@ -127,20 +127,11 @@ export default function MainCard({ dataSelected, isCelsius }: MainCardProps) {
   }, [dataSelected]);
 
   return (
-    <div className="w-full max-w-5xl bg-gradient-to-br from-white/5 to-white/15 opacity-75 p-8 shadow-md rounded-xl backdrop-blur-md">
+    <div className="w-full max-w-3xl mx-auto bg-gradient-to-br from-white/5 to-white/15 opacity-75 p-4 sm:p-6 lg:p-8 shadow-md rounded-xl backdrop-blur-md">
       {/* Location and Time */}
-      <div className="absolute flex flex-col items-start">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="text-white text-lg font-semibold">
-            {currentTime || "..."}
-          </span>
-          <span className="text-white/80 text-sm">
-            {currentDate || "..."}
-          </span>
-        </div>
+      <div className="flex flex-col sm:flex-row sm:justify-between space-y-2 sm:space-y-0">
         <div className="flex items-center gap-2">
-          <MapPin size={14} color="white" />
-          <span className="text-white text-sm">
+          <span className="text-white text-lg font-semibold">
             {loading
               ? "Loading..."
               : `${weatherData?.name || "Lima"}, ${
@@ -148,9 +139,17 @@ export default function MainCard({ dataSelected, isCelsius }: MainCardProps) {
                 }`}
           </span>
         </div>
+        <div className="flex items-center gap-2 ">
+          <span className="text-white text-lg font-semibold">
+            {currentTime || "..."}
+          </span>
+          <span className="text-white/80 text-sm">
+            {currentDate || "..."}
+          </span>
+        </div>
       </div>
       {/* Main weather */}
-      <div className="p-8 flex items-center justify-center gap-4">
+      <div className="p-8 flex items-center justify-center gap-4 sm:gap-6 lg:gap-8">
         {/* Icon weather */}
         <div className="flex items-center">
           {loading ? (
@@ -159,13 +158,13 @@ export default function MainCard({ dataSelected, isCelsius }: MainCardProps) {
             <img
               src={`http://openweathermap.org/img/wn/${weatherData?.weather[0]?.icon}@4x.png`}
               alt={weatherData?.weather[0]?.description}
-              className="w-32 h-32 drop-shadow-lg filter brightness-110 contrast-110"
+              className="w-24 h-24 sm:w-32 sm:h-32 lg:w-40 lg:h-40 drop-shadow-lg filter brightness-110 contrast-110"
             />
           )}
         </div>
         {/* Temperature and description */}
         <div className="flex flex-col items-center">
-          <div className="text-8xl font-thin text-white">
+          <div className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-thin text-white">
             {loading ? "..." : `${Math.round(convertTemperature(weatherData?.main?.temp || 0, isCelsius))}°`}
           </div>
           <div className="capitalize text-white text-lg font-semibold">
@@ -181,7 +180,7 @@ export default function MainCard({ dataSelected, isCelsius }: MainCardProps) {
         </div>
       </div>
       {/* Weather details */}
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 lg:gap-4">
         <DetailCard
           characteristic="Amanecer"
           value={convertUnixToDate(weatherData?.sys?.sunrise)}

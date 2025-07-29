@@ -36,9 +36,12 @@ export default function Home() {
         className={`${backgrounds[clima]} h-screen w-screen  flex items-center justify-center relative`}
       >
         <div className="w-full flex flex-col items-center justify-center gap-4">
-          <div className="w-full max-w-5xl flex items-center justify-center gap-4">
+          <div className="w-full max-w-3xl flex items-center justify-center gap-4">
             <SearchBar setDataSelected={setDataSelected} />
-            <UnitToggle isCelsius={isCelsius} onToggle={() => setIsCelsius(!isCelsius)} />
+            <UnitToggle
+              isCelsius={isCelsius}
+              onToggle={() => setIsCelsius(!isCelsius)}
+            />
           </div>
 
           <MainCard dataSelected={dataSelected} isCelsius={isCelsius} />
