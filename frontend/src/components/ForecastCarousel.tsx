@@ -84,16 +84,29 @@ export default function ForecastCarousel({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log("ForecastCarousel - useEffect triggered with:", {
+      city: dataSelected.city,
+      country: dataSelected.country
+    });
+    
     const fetchForecast = async () => {
+      // No hacer fetch si no hay ciudad seleccionada
+      if (!dataSelected.city || !dataSelected.country) {
+        console.log("ForecastCarousel - No city or country selected");
+        setLoading(false);
+        return;
+      }
+
       try {
         setLoading(true);
+        console.log("ForecastCarousel - Fetching forecast for:", `${dataSelected.city},${dataSelected.country}`);
         const data = await getForecast(
           `${dataSelected.city},${dataSelected.country}`
         );
         setForecastData(data || []);
-        console.log("Forecast data fetched:", data);
+        console.log("ForecastCarousel - Forecast data fetched for:", dataSelected.city, data);
       } catch (error) {
-        console.error("Error fetching forecast data:", error);
+        console.error("ForecastCarousel - Error fetching forecast data:", error);
         setForecastData([]);
       } finally {
         setLoading(false);
@@ -101,7 +114,7 @@ export default function ForecastCarousel({
     };
 
     fetchForecast();
-  }, [dataSelected]);
+  }, [dataSelected.city, dataSelected.country]); // Dependencias específicas en lugar del objeto completo
 
   return (
     <div className="group w-full max-w-sm sm:max-w-2xl md:max-w-3xl mx-auto bg-gradient-to-br from-white/5 to-white/15 opacity-75 py-3 sm:py-4 md:py-6 lg:py-8  px-4 sm:px-6 md:px-8 lg:px-10 shadow-md rounded-xl backdrop-blur-md relative">

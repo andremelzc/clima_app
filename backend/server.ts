@@ -6,13 +6,14 @@ import axios from "axios";
 dotenv.config();
 
 const app = express();
-const PORT_BACKEND = process.env.PORT_BACKEND ?? 3000;
+const PORT_BACKEND = Number(process.env.PORT_BACKEND) || 3000;
 const apiKey = process.env.OPENWEATHER_API_KEY;
 
 app.use(cors());
 
-app.listen(PORT_BACKEND, () => {
+app.listen(PORT_BACKEND, '0.0.0.0', () => {
   console.log(`Server is running at http://localhost:${PORT_BACKEND}`);
+  console.log(`Network access: http://0.0.0.0:${PORT_BACKEND}`);
 });
 
 app.get("/", (req, res) => {
@@ -60,26 +61,29 @@ app.get("/api/forecast", async (req, res) => {
   if (!apiKey) {
     return res.status(500).json({ error: "API key is not defined" });
   }
+  
   // 2. Check if the parameters are provided
-  const city = req.query.city ?? "Lima";
-  const country = req.query.country ?? "PE";
-  if (!city || !country) {
-    return res.status(400).json({ error: "City and country are required" });
+  const q = req.query.q as string;
+  if (!q) {
+    return res.status(400).json({ error: "Query parameter 'q' is required (format: 'City,Country')" });
   }
 
   try {
+    console.log("Fetching forecast for:", q);
     // 3. Fetch the forecast data
     const response = await axios.get(
       `https://api.openweathermap.org/data/2.5/forecast`,
       {
         params: {
-          q: `${city},${country}`,
+          q: q,
           appid: apiKey,
           lang: "es",
           units: "metric",
         },
       }
     );
+    
+    console.log("Forecast response received for:", q);
     // 4. Return the forecast data
     res.json(response.data);
   } catch (error: any) {
