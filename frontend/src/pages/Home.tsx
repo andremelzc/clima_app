@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import MainCard from "../components/MainCard";
 import SearchBar from "../components/SearchBar";
 import UnitToggle from "../components/UnitToggle";
+import ForecastCarousel from "../components/ForecastCarousel";
 
 export default function Home() {
   const [clima, setClima] = useState("cold");
@@ -50,6 +51,7 @@ export default function Home() {
           </div>
 
           <MainCard dataSelected={dataSelected} isCelsius={isCelsius} />
+          <ForecastCarousel />
         </div>
       </div>
     </>
