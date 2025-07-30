@@ -2,19 +2,19 @@
 /**
  * Convierte temperatura de Celsius a Fahrenheit
  * @param celsius - Temperatura en grados Celsius
- * @returns Temperatura en grados Fahrenheit
+ * @returns Temperatura en grados Fahrenheit redondeada a unidades enteras
  */
 export const celsiusToFahrenheit = (celsius: number): number => {
-  return (celsius * 9/5) + 32;
+  return Math.round((celsius * 9/5) + 32);
 };
 
 /**
  * Convierte temperatura de Fahrenheit a Celsius
  * @param fahrenheit - Temperatura en grados Fahrenheit
- * @returns Temperatura en grados Celsius
+ * @returns Temperatura en grados Celsius redondeada a unidades enteras
  */
 export const fahrenheitToCelsius = (fahrenheit: number): number => {
-  return (fahrenheit - 32) * 5/9;
+  return Math.round((fahrenheit - 32) * 5/9);
 };
 
 /**
@@ -31,9 +31,9 @@ export const formatTemperature = (temp: number, isCelsius: boolean): string => {
 /**
  * Convierte temperatura según la unidad deseada
  * @param temp - Temperatura base en Celsius
- * @param isCelsius - Si es true devuelve Celsius, si es false convierte a Fahrenheit
- * @returns Temperatura en la unidad solicitada
+ * @param isCelsius - Si es true devuelve Celsius redondeado, si es false convierte a Fahrenheit redondeado
+ * @returns Temperatura en la unidad solicitada redondeada a unidades enteras
  */
 export const convertTemperature = (temp: number, isCelsius: boolean): number => {
-  return isCelsius ? temp : celsiusToFahrenheit(temp);
+  return isCelsius ? Math.round(temp) : celsiusToFahrenheit(temp);
 };

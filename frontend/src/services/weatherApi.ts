@@ -17,3 +17,12 @@ export const convertUnixToDate = (unixTimeStamp: number) => {
     minute: "2-digit",
   });
 };
+
+export const convertUnixToDateString = (unixTimeStamp: number) => {
+  const date = new Date(unixTimeStamp * 1000);
+  return date.toLocaleDateString("es-PE", {
+    weekday: "short", // Lun, Mar, Mié
+    day: "numeric",   // 1, 2, 3
+    month: "short"    // Ene, Feb, Mar
+  });
+};

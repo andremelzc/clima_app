@@ -51,7 +51,7 @@ export default function Home() {
           </div>
 
           <MainCard dataSelected={dataSelected} isCelsius={isCelsius} />
-          <ForecastCarousel />
+          <ForecastCarousel dataSelected={dataSelected} isCelsius={isCelsius} />
         </div>
       </div>
     </>

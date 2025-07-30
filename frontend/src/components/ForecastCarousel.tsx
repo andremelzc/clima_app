@@ -1,8 +1,12 @@
+import { useState, useEffect } from "react";
 import ForecastCard from "./ForecastCard";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { getForecast } from "../services/cityApi";
+import { convertUnixToDate, convertUnixToDateString } from "../services/weatherApi";
+import { convertTemperature } from "../lib/temperatureUtils";
 
 // Componente para el botón de flecha personalizado
 function CustomArrow({ className, style, onClick, direction }: any) {
@@ -21,13 +25,21 @@ function CustomArrow({ className, style, onClick, direction }: any) {
   );
 }
 
-export default function ForecastCarousel() {
+interface ForecastCarouselProps {
+  dataSelected: { city: string; country: string; lat: number; lon: number };
+  isCelsius: boolean;
+}
+
+export default function ForecastCarousel({
+  dataSelected,
+  isCelsius,
+}: ForecastCarouselProps) {
   const settings = {
-    dots: true,
+    dots: false,
     infinite: false,
     speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
+    slidesToShow: 5,
+    slidesToScroll: 5,
     initialSlide: 0,
     arrows: true,
     prevArrow: <CustomArrow direction="prev" />,
@@ -36,18 +48,26 @@ export default function ForecastCarousel() {
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-          infinite: true,
+          slidesToShow: 4,
+          slidesToScroll: 4,
+          infinite: false,
           dots: true,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          initialSlide: 0,
         },
       },
       {
         breakpoint: 600,
         settings: {
           slidesToShow: 2,
-          slidesToScroll: 1,
-          initialSlide: 2,
+          slidesToScroll: 2,
+          initialSlide: 0,
         },
       },
       {
@@ -60,50 +80,55 @@ export default function ForecastCarousel() {
     ],
   };
 
+  const [forecastData, setForecastData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchForecast = async () => {
+      try {
+        setLoading(true);
+        const data = await getForecast(
+          `${dataSelected.city},${dataSelected.country}`
+        );
+        setForecastData(data || []);
+        console.log("Forecast data fetched:", data);
+      } catch (error) {
+        console.error("Error fetching forecast data:", error);
+        setForecastData([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchForecast();
+  }, [dataSelected]);
+
   return (
-    <div className="group w-full max-w-sm sm:max-w-2xl md:max-w-3xl mx-auto bg-gradient-to-br from-white/5 to-white/15 opacity-75 py-3 sm:py-4 md:py-6 lg:py-8  px-4 sm:px-6 md:px-8 lg:px-10 lg:px-12 shadow-md rounded-xl backdrop-blur-md relative">
-      <Slider {...settings}>
-        <div className="px-2">
-          <ForecastCard
-            time="12:00 PM"
-            icon="/path/to/icon.png"
-            temperature={25}
-            description="Sunny"
-          />
+    <div className="group w-full max-w-sm sm:max-w-2xl md:max-w-3xl mx-auto bg-gradient-to-br from-white/5 to-white/15 opacity-75 py-3 sm:py-4 md:py-6 lg:py-8  px-4 sm:px-6 md:px-8 lg:px-10 shadow-md rounded-xl backdrop-blur-md relative">
+      {loading ? (
+        <div className="text-center text-white py-8">Loading forecast...</div>
+      ) : forecastData.length > 0 ? (
+        <Slider {...settings}>
+          {forecastData.map((forecastItem: any) => (
+            <div className="px-1" key={forecastItem.dt}>
+              <ForecastCard
+                date={convertUnixToDateString(forecastItem.dt)}
+                time={convertUnixToDate(forecastItem.dt)}
+                icon={forecastItem.weather[0].icon}
+                avgTemperature={convertTemperature(
+                  forecastItem.main.temp,
+                  isCelsius
+                )}
+                description={forecastItem.weather[0].description}
+              />
+            </div>
+          ))}
+        </Slider>
+      ) : (
+        <div className="text-center text-white py-8">
+          No forecast data available
         </div>
-        <div className="px-2">
-          <ForecastCard
-            time="1:00 PM"
-            icon="/path/to/icon.png"
-            temperature={27}
-            description="Partly Cloudy"
-          />
-        </div>
-        <div className="px-2">
-          <ForecastCard
-            time="2:00 PM"
-            icon="/path/to/icon.png"
-            temperature={28}
-            description="Cloudy"
-          />
-        </div>
-        <div className="px-2">
-          <ForecastCard
-            time="3:00 PM"
-            icon="/path/to/icon.png"
-            temperature={26}
-            description="Rain"
-          />
-        </div>
-        <div className="px-2">
-          <ForecastCard
-            time="4:00 PM"
-            icon="/path/to/icon.png"
-            temperature={24}
-            description="Stormy"
-          />
-        </div>
-      </Slider>
+      )}
     </div>
   );
 }

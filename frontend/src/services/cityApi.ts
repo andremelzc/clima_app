@@ -19,3 +19,13 @@ export const getTimezone = async (lat: number, lon: number) => {
   }
   return response.json();
 };
+
+export const getForecast = async (query: string) => {
+  const response = await fetch(`${API_BASE}/api/forecast?q=${query}`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch forecast data");
+  }
+  const data = await response.json();
+  console.log("Forecast data list fetched:", data.list);
+  return data.list;
+}
