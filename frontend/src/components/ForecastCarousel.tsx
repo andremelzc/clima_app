@@ -130,13 +130,13 @@ export default function ForecastCarousel({
   }, [dataSelected.city, dataSelected.country]); // Dependencias específicas en lugar del objeto completo
 
   return (
-    <div className="group w-full max-w-sm sm:max-w-2xl md:max-w-3xl mx-auto bg-gradient-to-br from-white/10 to-white/25 opacity-90 py-4 sm:py-4 md:py-7 lg:py-8  px-4 sm:px-6 md:px-8 lg:px-10 shadow-xl rounded-xl backdrop-blur-lg border border-white/20 relative">
+    <div className="group w-full max-w-sm sm:max-w-2xl md:max-w-4xl mx-auto bg-gradient-to-br from-white/10 to-white/25 opacity-90 py-4 sm:py-4 md:py-7 lg:py-8  px-4 sm:px-6 md:px-8 lg:px-10 shadow-xl rounded-xl backdrop-blur-lg border border-white/20 relative">
       {loading ? (
         <div className="text-center text-white py-8">Loading forecast...</div>
       ) : forecastData.length > 0 ? (
         <Slider {...settings}>
           {forecastData.map((forecastItem: any) => (
-            <div className="px-1 py-2" key={forecastItem.dt}>
+            <div className="px-3 py-2" key={forecastItem.dt}>
               <ForecastCard
                 date={convertUnixToDateString(forecastItem.dt)}
                 time={convertUnixToDate(forecastItem.dt)}

@@ -9,7 +9,7 @@ export default function UnitToggle({ isCelsius, onToggle }: UnitToggleProps) {
   return (
     <div className="relative">
       <button
-        className="relative w-20 h-12 rounded-xl shadow-xl border border-white/20 outline-none transition-all duration-300 cursor-pointer backdrop-blur-lg"
+        className="relative w-20 h-14 flex items-center rounded-xl shadow-xl border border-white/20 outline-none transition-all duration-300 cursor-pointer backdrop-blur-lg"
         onClick={() => onToggle()}
         style={{
           appearance: "none",
@@ -23,7 +23,7 @@ export default function UnitToggle({ isCelsius, onToggle }: UnitToggleProps) {
       >
         {/* Círculo que se mueve */}
         <div
-          className={`absolute top-1 w-10 h-10 bg-white/95 backdrop-blur-sm rounded-full shadow-xl transition-all duration-300 flex items-center justify-center text-gray-800 text-sm font-bold border border-white/30 ${
+          className={`absolute top-1/2 -translate-y-1/2 w-10 h-10 bg-white/95 backdrop-blur-sm rounded-full shadow-xl transition-all duration-300 flex items-center justify-center text-gray-800 text-sm font-bold border border-white/30 ${
             isCelsius ? "left-2" : "left-8"
           }`}
         >

@@ -21,11 +21,11 @@ export default function Home() {
   return (
     <>
       <div
-        className={`${backgroundColor} h-screen w-screen flex items-center justify-center relative`}
+        className={`${backgroundColor} min-h-screen w-screen flex items-center justify-center relative overflow-x-hidden`}
       >
-        <div className="w-full flex flex-col items-center justify-center gap-4">
+        <div className="w-full px-2 sm:px-4 flex flex-col items-center justify-center gap-3 sm:gap-4 py-4">
           <Navbar />
-          <div className="w-full max-w-sm sm:max-w-2xl md:max-w-3xl flex items-center justify-center gap-4">
+          <div className="w-full max-w-[95vw] sm:max-w-2xl md:max-w-4xl flex items-center justify-center gap-3 sm:gap-4">
             <SearchBar
               dataSelected={dataSelected}
               setDataSelected={setDataSelected}

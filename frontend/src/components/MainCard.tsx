@@ -64,18 +64,18 @@ export default function MainCard({
   }, [weatherData, setBackgroundColor]);
 
   return (
-    <div className="w-full max-w-sm sm:max-w-2xl md:max-w-3xl mx-auto bg-gradient-to-br from-white/10 to-white/25 opacity-90 p-3 sm:p-4 md:p-6 lg:p-8 shadow-xl rounded-xl backdrop-blur-lg border border-white/20">
+    <div className="w-full max-w-[95vw] sm:max-w-2xl md:max-w-4xl mx-auto bg-gradient-to-br from-white/10 to-white/25 opacity-90 p-4 sm:p-4 md:p-6 lg:p-8 shadow-xl rounded-xl backdrop-blur-lg border border-white/20">
       {/* Time */}
-      <div className="absolute top-4 right-4 text-white text-sm font-medium">
+      <div className="absolute top-3 right-3 sm:top-4 sm:right-4 text-white text-xs sm:text-sm font-medium">
         <div className="flex flex-col items-end text-right">
-          <span className="text-white text-sm font-semibold drop-shadow-lg">
+          <span className="text-white text-xs sm:text-sm font-semibold drop-shadow-lg">
             {currentTime || "..."}
           </span>
-          <span className="text-white/80 text-xs drop-shadow-md">{currentDate || "..."}</span>
+          <span className="text-white/80 text-[10px] sm:text-xs drop-shadow-md">{currentDate || "..."}</span>
         </div>
       </div>
       {/* Main weather */}
-      <div className="p-2 sm:p-4 lg:p-6 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 lg:gap-6">
+      <div className="pt-8 sm:pt-2 p-2 sm:p-4 lg:p-6 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 lg:gap-6">
         {/* Icon weather */}
         <div className="flex items-center order-1 sm:order-none">
           {loading ? (
@@ -84,13 +84,13 @@ export default function MainCard({
             <img
               src={`http://openweathermap.org/img/wn/${weatherData?.weather[0]?.icon}@4x.png`}
               alt={weatherData?.weather[0]?.description}
-              className="w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 drop-shadow-lg filter brightness-110 contrast-110"
+              className="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 drop-shadow-lg filter brightness-110 contrast-110"
             />
           )}
         </div>
         {/* Temperature and description */}
         <div className="flex flex-col items-center text-center">
-          <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-thin text-white leading-none drop-shadow-2xl">
+          <div className="text-5xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-thin text-white leading-none drop-shadow-2xl">
             {loading
               ? "..."
               : `${Math.round(
@@ -115,36 +115,36 @@ export default function MainCard({
         </div>
       </div>
       {/* Weather details */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 md:gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-3 md:gap-4 mt-4">
         <DetailCard
           characteristic="Amanecer"
           value={convertUnixToDate(weatherData?.sys?.sunrise)}
-          icon={<Sunrise size={14} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
+          icon={<Sunrise size={16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
         />
         <DetailCard
           characteristic="Atardecer"
           value={convertUnixToDate(weatherData?.sys?.sunset)}
-          icon={<Sunset size={14} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
+          icon={<Sunset size={16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
         />
         <DetailCard
           characteristic="Humedad"
           value={`${weatherData?.main?.humidity || 0}%`}
-          icon={<Droplets size={14} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
+          icon={<Droplets size={16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
         />
         <DetailCard
           characteristic="Viento"
           value={`${weatherData?.wind?.speed || 0} m/s`}
-          icon={<Wind size={14} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
+          icon={<Wind size={16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
         />
         <DetailCard
           characteristic="Presión"
           value={`${weatherData?.main?.pressure || 0} hPa`}
-          icon={<Gauge size={14} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
+          icon={<Gauge size={16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
         />
         <DetailCard
           characteristic="Visibilidad"
           value={`${weatherData?.visibility || 0} m`}
-          icon={<Eye size={14} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
+          icon={<Eye size={16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
         />
       </div>
     </div>
