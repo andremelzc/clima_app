@@ -1,6 +1,23 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Search, Globe, MapPin } from "lucide-react";
 import { getCities } from "../services/cityApi";
+
+// Hook personalizado para debounce
+const useDebounce = (value: string, delay: number) => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+};
 
 interface SearchBarProps {
   dataSelected: { city: string; country: string; lat: number; lon: number };
@@ -22,6 +39,34 @@ export default function SearchBar({
   const [cities, setCities] = useState<any[]>([]);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Debounce del searchQuery con 300ms de delay
+  const debouncedSearchQuery = useDebounce(searchQuery, 300);
+
+  // Función para buscar ciudades
+  const searchCities = useCallback(async (query: string) => {
+    if (!query.trim() || query.trim().length < 2) {
+      setCities([]);
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      const results = await getCities(query);
+      setCities(results || []);
+    } catch (error) {
+      console.error("Error fetching cities:", error);
+      setCities([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  // Efecto que se ejecuta cuando cambia el valor con debounce
+  useEffect(() => {
+    searchCities(debouncedSearchQuery);
+  }, [debouncedSearchQuery, searchCities]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -57,32 +102,6 @@ export default function SearchBar({
       lon: city.coord.lon,
     });
   };
-
-  const searchCities = async (query: string) => {
-    if (query.trim().length < 2) {
-      setCities([]);
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const data = await getCities(query);
-      setCities(data);
-    } catch (error) {
-      console.error("Error fetching cities:", error);
-      setCities([]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      searchCities(searchQuery);
-    }, 300);
-
-    return () => clearTimeout(timeoutId);
-  }, [searchQuery]);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);

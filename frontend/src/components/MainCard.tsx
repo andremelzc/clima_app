@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import DetailCard from "./DetailCard";
 import { Sunrise, Sunset, Droplets, Wind, Gauge, Eye } from "lucide-react";
 import { getCurrentWeather, convertUnixToDate } from "../services/weatherApi";
@@ -22,6 +22,38 @@ export default function MainCard({
 
   // Hook para obtener la hora de la ciudad
   const { currentTime, currentDate } = useCityTime(dataSelected);
+
+  // Memoización de datos calculados para optimizar renders
+  const memoizedTemperatureData = useMemo(() => {
+    if (!weatherData?.main) return null;
+
+    return {
+      currentTemp: Math.round(
+        convertTemperature(weatherData.main.temp, isCelsius)
+      ),
+      feelsLike: Math.round(
+        convertTemperature(weatherData.main.feels_like, isCelsius)
+      ),
+      description: weatherData.weather?.[0]?.description || "Desconocido",
+    };
+  }, [
+    weatherData?.main?.temp,
+    weatherData?.main?.feels_like,
+    weatherData?.weather?.[0]?.description,
+    isCelsius,
+  ]);
+
+  // Memoización del color de fondo
+  const memoizedBackgroundColor = useMemo(() => {
+    if (!weatherData?.main?.temp || !weatherData?.weather?.[0]?.description) {
+      return getBackgroundColor({ temperature: 20, description: "clear" });
+    }
+
+    return getBackgroundColor({
+      temperature: weatherData.main.temp,
+      description: weatherData.weather[0].description,
+    });
+  }, [weatherData?.main?.temp, weatherData?.weather?.[0]?.description]);
 
   // Función para obtener el clima de una ciudad
   const fetchWeatherData = async () => {
@@ -52,15 +84,8 @@ export default function MainCard({
 
   // Actualizar background cuando weatherData cambie
   useEffect(() => {
-    if (weatherData?.main?.temp && weatherData?.weather?.[0]?.description) {
-      setBackgroundColor(
-        getBackgroundColor({
-          temperature: weatherData.main.temp,
-          description: weatherData.weather[0].description,
-        })
-      );
-    }
-  }, [weatherData, setBackgroundColor]);
+    setBackgroundColor(memoizedBackgroundColor);
+  }, [memoizedBackgroundColor, setBackgroundColor]);
 
   return (
     <div className="w-full max-w-[95vw] sm:max-w-2xl md:max-w-4xl mx-auto bg-gradient-to-br from-white/10 to-white/25 opacity-90 p-4 sm:p-4 md:p-6 lg:p-8 shadow-xl rounded-xl backdrop-blur-lg border border-white/20">
@@ -103,28 +128,21 @@ export default function MainCard({
             {loading ? (
               <div className="h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24 bg-white/30 rounded w-24 sm:w-28 md:w-32 lg:w-36 xl:w-40 animate-pulse"></div>
             ) : (
-              `${Math.round(
-                convertTemperature(weatherData?.main?.temp || 0, isCelsius)
-              )}°`
+              `${memoizedTemperatureData?.currentTemp || 0}°`
             )}
           </div>
           <div className="capitalize text-white text-sm sm:text-base md:text-lg font-semibold mt-1 drop-shadow-lg">
             {loading ? (
               <div className="h-4 sm:h-5 md:h-6 bg-white/20 rounded w-20 sm:w-24 md:w-28 animate-pulse"></div>
             ) : (
-              weatherData?.weather[0]?.description || "Desconocido"
+              memoizedTemperatureData?.description || "Desconocido"
             )}
           </div>
           <div className="text-white text-xs sm:text-sm mt-1 drop-shadow-md">
             {loading ? (
               <div className="h-3 sm:h-4 bg-white/20 rounded w-24 sm:w-28 animate-pulse"></div>
             ) : (
-              `Sensación térmica ${Math.round(
-                convertTemperature(
-                  weatherData?.main?.feels_like || 0,
-                  isCelsius
-                )
-              )}°`
+              `Sensación térmica ${memoizedTemperatureData?.feelsLike || 0}°`
             )}
           </div>
         </div>
@@ -135,7 +153,10 @@ export default function MainCard({
           <>
             {/* Skeleton for DetailCards */}
             {[1, 2, 3, 4, 5, 6].map((index) => (
-              <div key={index} className="bg-[#D9D9D9]/50 animate-pulse flex flex-col items-start shadow-md rounded-lg p-2 sm:p-2.5">
+              <div
+                key={index}
+                className="bg-[#D9D9D9]/50 animate-pulse flex flex-col items-start shadow-md rounded-lg p-2 sm:p-2.5"
+              >
                 <div className="flex items-center gap-1 sm:gap-1.5 mb-1">
                   {/* Icon skeleton */}
                   <div className="w-4 h-4 sm:w-5 sm:h-5 bg-white/30 rounded flex-shrink-0"></div>
@@ -152,17 +173,23 @@ export default function MainCard({
             <DetailCard
               characteristic="Amanecer"
               value={convertUnixToDate(weatherData?.sys?.sunrise)}
-              icon={<Sunrise size={16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
+              icon={
+                <Sunrise size={16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />
+              }
             />
             <DetailCard
               characteristic="Atardecer"
               value={convertUnixToDate(weatherData?.sys?.sunset)}
-              icon={<Sunset size={16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
+              icon={
+                <Sunset size={16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />
+              }
             />
             <DetailCard
               characteristic="Humedad"
               value={`${weatherData?.main?.humidity || 0}%`}
-              icon={<Droplets size={16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
+              icon={
+                <Droplets size={16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />
+              }
             />
             <DetailCard
               characteristic="Viento"
