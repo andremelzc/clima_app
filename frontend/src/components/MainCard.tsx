@@ -69,9 +69,19 @@ export default function MainCard({
       <div className="absolute top-3 right-3 sm:top-4 sm:right-4 text-white text-xs sm:text-sm font-medium">
         <div className="flex flex-col items-end text-right">
           <span className="text-white text-xs sm:text-sm font-semibold drop-shadow-lg">
-            {currentTime || "..."}
+            {loading ? (
+              <div className="h-3 sm:h-4 bg-white/30 rounded w-12 animate-pulse"></div>
+            ) : (
+              currentTime || "..."
+            )}
           </span>
-          <span className="text-white/80 text-[10px] sm:text-xs drop-shadow-md">{currentDate || "..."}</span>
+          <span className="text-white/80 text-[10px] sm:text-xs drop-shadow-md">
+            {loading ? (
+              <div className="h-2 sm:h-3 bg-white/20 rounded w-16 animate-pulse mt-1"></div>
+            ) : (
+              currentDate || "..."
+            )}
+          </span>
         </div>
       </div>
       {/* Main weather */}
@@ -79,7 +89,7 @@ export default function MainCard({
         {/* Icon weather */}
         <div className="flex items-center order-1 sm:order-none">
           {loading ? (
-            <span className="text-white text-sm">Cargando...</span>
+            <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 bg-white/30 rounded-full animate-pulse"></div>
           ) : (
             <img
               src={`http://openweathermap.org/img/wn/${weatherData?.weather[0]?.icon}@4x.png`}
@@ -91,61 +101,87 @@ export default function MainCard({
         {/* Temperature and description */}
         <div className="flex flex-col items-center text-center">
           <div className="text-5xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-thin text-white leading-none drop-shadow-2xl">
-            {loading
-              ? "..."
-              : `${Math.round(
-                  convertTemperature(weatherData?.main?.temp || 0, isCelsius)
-                )}°`}
+            {loading ? (
+              <div className="h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24 bg-white/30 rounded w-24 sm:w-28 md:w-32 lg:w-36 xl:w-40 animate-pulse"></div>
+            ) : (
+              `${Math.round(
+                convertTemperature(weatherData?.main?.temp || 0, isCelsius)
+              )}°`
+            )}
           </div>
           <div className="capitalize text-white text-sm sm:text-base md:text-lg font-semibold mt-1 drop-shadow-lg">
-            {loading
-              ? "..."
-              : weatherData?.weather[0]?.description || "Desconocido"}
+            {loading ? (
+              <div className="h-4 sm:h-5 md:h-6 bg-white/20 rounded w-20 sm:w-24 md:w-28 animate-pulse"></div>
+            ) : (
+              weatherData?.weather[0]?.description || "Desconocido"
+            )}
           </div>
           <div className="text-white text-xs sm:text-sm mt-1 drop-shadow-md">
-            {loading
-              ? "..."
-              : `Sensación térmica ${Math.round(
-                  convertTemperature(
-                    weatherData?.main?.feels_like || 0,
-                    isCelsius
-                  )
-                )}°`}
+            {loading ? (
+              <div className="h-3 sm:h-4 bg-white/20 rounded w-24 sm:w-28 animate-pulse"></div>
+            ) : (
+              `Sensación térmica ${Math.round(
+                convertTemperature(
+                  weatherData?.main?.feels_like || 0,
+                  isCelsius
+                )
+              )}°`
+            )}
           </div>
         </div>
       </div>
       {/* Weather details */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-3 md:gap-4 mt-4">
-        <DetailCard
-          characteristic="Amanecer"
-          value={convertUnixToDate(weatherData?.sys?.sunrise)}
-          icon={<Sunrise size={16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
-        />
-        <DetailCard
-          characteristic="Atardecer"
-          value={convertUnixToDate(weatherData?.sys?.sunset)}
-          icon={<Sunset size={16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
-        />
-        <DetailCard
-          characteristic="Humedad"
-          value={`${weatherData?.main?.humidity || 0}%`}
-          icon={<Droplets size={16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
-        />
-        <DetailCard
-          characteristic="Viento"
-          value={`${weatherData?.wind?.speed || 0} m/s`}
-          icon={<Wind size={16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
-        />
-        <DetailCard
-          characteristic="Presión"
-          value={`${weatherData?.main?.pressure || 0} hPa`}
-          icon={<Gauge size={16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
-        />
-        <DetailCard
-          characteristic="Visibilidad"
-          value={`${weatherData?.visibility || 0} m`}
-          icon={<Eye size={16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
-        />
+        {loading ? (
+          <>
+            {/* Skeleton for DetailCards */}
+            {[1, 2, 3, 4, 5, 6].map((index) => (
+              <div key={index} className="bg-[#D9D9D9]/50 animate-pulse flex flex-col items-start shadow-md rounded-lg p-2 sm:p-2.5">
+                <div className="flex items-center gap-1 sm:gap-1.5 mb-1">
+                  {/* Icon skeleton */}
+                  <div className="w-4 h-4 sm:w-5 sm:h-5 bg-white/30 rounded flex-shrink-0"></div>
+                  {/* Characteristic name skeleton */}
+                  <div className="h-3 sm:h-4 bg-white/30 rounded w-12 sm:w-16"></div>
+                </div>
+                {/* Value skeleton */}
+                <div className="h-4 sm:h-5 bg-white/20 rounded w-16 sm:w-20"></div>
+              </div>
+            ))}
+          </>
+        ) : (
+          <>
+            <DetailCard
+              characteristic="Amanecer"
+              value={convertUnixToDate(weatherData?.sys?.sunrise)}
+              icon={<Sunrise size={16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
+            />
+            <DetailCard
+              characteristic="Atardecer"
+              value={convertUnixToDate(weatherData?.sys?.sunset)}
+              icon={<Sunset size={16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
+            />
+            <DetailCard
+              characteristic="Humedad"
+              value={`${weatherData?.main?.humidity || 0}%`}
+              icon={<Droplets size={16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
+            />
+            <DetailCard
+              characteristic="Viento"
+              value={`${weatherData?.wind?.speed || 0} m/s`}
+              icon={<Wind size={16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
+            />
+            <DetailCard
+              characteristic="Presión"
+              value={`${weatherData?.main?.pressure || 0} hPa`}
+              icon={<Gauge size={16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
+            />
+            <DetailCard
+              characteristic="Visibilidad"
+              value={`${weatherData?.visibility || 0} m`}
+              icon={<Eye size={16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />}
+            />
+          </>
+        )}
       </div>
     </div>
   );

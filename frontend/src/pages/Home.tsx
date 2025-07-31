@@ -21,7 +21,7 @@ export default function Home() {
   return (
     <>
       <div
-        className={`${backgroundColor} min-h-screen w-screen flex items-center justify-center relative overflow-x-hidden`}
+        className={`${backgroundColor} min-h-screen w-screen flex items-center justify-center relative overflow-x-hidden transition-all duration-1000 ease-in-out`}
       >
         <div className="w-full px-2 sm:px-4 flex flex-col items-center justify-center gap-3 sm:gap-4 py-4">
           <Navbar />

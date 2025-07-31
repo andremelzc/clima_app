@@ -132,7 +132,23 @@ export default function ForecastCarousel({
   return (
     <div className="group w-full max-w-sm sm:max-w-2xl md:max-w-4xl mx-auto bg-gradient-to-br from-white/10 to-white/25 opacity-90 py-4 sm:py-4 md:py-7 lg:py-8  px-4 sm:px-6 md:px-8 lg:px-10 shadow-xl rounded-xl backdrop-blur-lg border border-white/20 relative">
       {loading ? (
-        <div className="text-center text-white py-8">Loading forecast...</div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
+          {/* Skeleton loading cards */}
+          {[1, 2, 3, 4, 5].map((index) => (
+            <div key={index} className="bg-[#D9D9D9]/50 animate-pulse flex flex-col items-center text-center shadow-md rounded-lg p-2 sm:p-3">
+              <div className="w-full flex flex-col items-center justify-center">
+                {/* Date skeleton - text-xs */}
+                <div className="h-3 bg-white/30 rounded w-16 mb-1"></div>
+                {/* Time skeleton - text-sm sm:text-base */}
+                <div className="h-4 sm:h-5 bg-white/30 rounded w-12 mb-1"></div>
+                {/* Icon skeleton - w-12 sm:w-16 h-auto */}
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/30 rounded-full mb-1"></div>
+                {/* Temperature skeleton - text-sm sm:text-md */}
+                <div className="h-4 sm:h-5 bg-white/30 rounded w-10"></div>
+              </div>
+            </div>
+          ))}
+        </div>
       ) : forecastData.length > 0 ? (
         <Slider {...settings}>
           {forecastData.map((forecastItem: any) => (
