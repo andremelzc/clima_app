@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import axios from "axios";
@@ -7,7 +7,7 @@ dotenv.config();
 
 const app = express();
 const PORT_BACKEND = Number(process.env.PORT_BACKEND) || 3000;
-const apiKey = process.env.OPENWEATHER_API_KEY;
+const apiKey: string | undefined = process.env.OPENWEATHER_API_KEY;
 
 app.use(cors());
 
@@ -16,11 +16,11 @@ app.listen(PORT_BACKEND, '0.0.0.0', () => {
   console.log(`Network access: http://0.0.0.0:${PORT_BACKEND}`);
 });
 
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.send("Welcome to the Clima App API!");
 });
 
-app.get("/api/weather", async (req, res) => {
+app.get("/api/weather", async (req: Request, res: Response) => {
   // 1. Check if apiKey is defined
   if (!apiKey) {
     return res.status(500).json({ error: "API key is not defined" });
@@ -56,7 +56,7 @@ app.get("/api/weather", async (req, res) => {
   }
 });
 
-app.get("/api/forecast", async (req, res) => {
+app.get("/api/forecast", async (req: Request, res: Response) => {
   // 1. Check if apiKey is defined
   if (!apiKey) {
     return res.status(500).json({ error: "API key is not defined" });
@@ -92,7 +92,7 @@ app.get("/api/forecast", async (req, res) => {
   }
 });
 
-app.get("/api/cities/search", async (req, res) => {
+app.get("/api/cities/search", async (req: Request, res: Response) => {
   const query = req.query.q as string;
   const cities = require("./data/city.list.json");
 
@@ -129,7 +129,7 @@ app.get("/api/cities/search", async (req, res) => {
   res.json(filteredCities);
 });
 
-app.get("/api/timezone", async (req, res) => {
+app.get("/api/timezone", async (req: Request, res: Response) => {
   const lat = req.query.lat;
   const lon = req.query.lon;
 

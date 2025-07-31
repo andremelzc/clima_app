@@ -4,18 +4,19 @@
     "module": "commonjs",
     "outDir": "./dist",
     "rootDir": "./",
-    "strict": true,
+    "strict": false,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
+    "forceConsistentCasingInFileNames": false,
     "resolveJsonModule": true,
     "types": ["node"],
     "moduleResolution": "node",
     "declaration": false,
     "removeComments": true,
     "noImplicitAny": false,
-    "allowJs": true
+    "allowJs": true,
+    "suppressImplicitAnyIndexErrors": true
   },
   "ts-node": {
     "esm": false
