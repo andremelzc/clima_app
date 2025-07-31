@@ -26,6 +26,5 @@ export const getForecast = async (query: string) => {
     throw new Error("Failed to fetch forecast data");
   }
   const data = await response.json();
-  console.log("Forecast data list fetched:", data.list);
   return data.list;
 }

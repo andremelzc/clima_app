@@ -38,7 +38,6 @@ export default function MainCard({
         dataSelected.country
       );
       setWeatherData(data);
-      console.log("Weather data:", data);
     } catch (error) {
       console.error("Error fetching weather data:", error);
     } finally {

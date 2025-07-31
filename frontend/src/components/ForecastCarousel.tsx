@@ -87,34 +87,20 @@ export default function ForecastCarousel({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log("ForecastCarousel - useEffect triggered with:", {
-      city: dataSelected.city,
-      country: dataSelected.country,
-    });
 
     const fetchForecast = async () => {
       // No hacer fetch si no hay ciudad seleccionada
       if (!dataSelected.city || !dataSelected.country) {
-        console.log("ForecastCarousel - No city or country selected");
         setLoading(false);
         return;
       }
 
       try {
         setLoading(true);
-        console.log(
-          "ForecastCarousel - Fetching forecast for:",
-          `${dataSelected.city},${dataSelected.country}`
-        );
         const data = await getForecast(
           `${dataSelected.city},${dataSelected.country}`
         );
         setForecastData(data || []);
-        console.log(
-          "ForecastCarousel - Forecast data fetched for:",
-          dataSelected.city,
-          data
-        );
       } catch (error) {
         console.error(
           "ForecastCarousel - Error fetching forecast data:",
