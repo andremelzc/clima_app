@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "nodemon --exec ts-node server.ts",
     "dev:network": "nodemon --exec ts-node server.ts",
-    "start": "ts-node server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "start:ts": "ts-node server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
