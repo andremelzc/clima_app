@@ -5,7 +5,10 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { getForecast } from "../services/cityApi";
-import { convertUnixToDate, convertUnixToDateString } from "../services/weatherApi";
+import {
+  convertUnixToDate,
+  convertUnixToDateString,
+} from "../services/weatherApi";
 import { convertTemperature } from "../lib/temperatureUtils";
 
 // Componente para el botón de flecha personalizado
@@ -86,9 +89,9 @@ export default function ForecastCarousel({
   useEffect(() => {
     console.log("ForecastCarousel - useEffect triggered with:", {
       city: dataSelected.city,
-      country: dataSelected.country
+      country: dataSelected.country,
     });
-    
+
     const fetchForecast = async () => {
       // No hacer fetch si no hay ciudad seleccionada
       if (!dataSelected.city || !dataSelected.country) {
@@ -99,14 +102,24 @@ export default function ForecastCarousel({
 
       try {
         setLoading(true);
-        console.log("ForecastCarousel - Fetching forecast for:", `${dataSelected.city},${dataSelected.country}`);
+        console.log(
+          "ForecastCarousel - Fetching forecast for:",
+          `${dataSelected.city},${dataSelected.country}`
+        );
         const data = await getForecast(
           `${dataSelected.city},${dataSelected.country}`
         );
         setForecastData(data || []);
-        console.log("ForecastCarousel - Forecast data fetched for:", dataSelected.city, data);
+        console.log(
+          "ForecastCarousel - Forecast data fetched for:",
+          dataSelected.city,
+          data
+        );
       } catch (error) {
-        console.error("ForecastCarousel - Error fetching forecast data:", error);
+        console.error(
+          "ForecastCarousel - Error fetching forecast data:",
+          error
+        );
         setForecastData([]);
       } finally {
         setLoading(false);
@@ -117,13 +130,13 @@ export default function ForecastCarousel({
   }, [dataSelected.city, dataSelected.country]); // Dependencias específicas en lugar del objeto completo
 
   return (
-    <div className="group w-full max-w-sm sm:max-w-2xl md:max-w-3xl mx-auto bg-gradient-to-br from-white/5 to-white/15 opacity-75 py-3 sm:py-4 md:py-6 lg:py-8  px-4 sm:px-6 md:px-8 lg:px-10 shadow-md rounded-xl backdrop-blur-md relative">
+    <div className="group w-full max-w-sm sm:max-w-2xl md:max-w-3xl mx-auto bg-gradient-to-br from-white/10 to-white/25 opacity-90 py-4 sm:py-4 md:py-7 lg:py-8  px-4 sm:px-6 md:px-8 lg:px-10 shadow-xl rounded-xl backdrop-blur-lg border border-white/20 relative">
       {loading ? (
         <div className="text-center text-white py-8">Loading forecast...</div>
       ) : forecastData.length > 0 ? (
         <Slider {...settings}>
           {forecastData.map((forecastItem: any) => (
-            <div className="px-1" key={forecastItem.dt}>
+            <div className="px-1 py-2" key={forecastItem.dt}>
               <ForecastCard
                 date={convertUnixToDateString(forecastItem.dt)}
                 time={convertUnixToDate(forecastItem.dt)}

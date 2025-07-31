@@ -112,9 +112,9 @@ export default function SearchBar({
       {isOpen && <div className="fixed inset-0 backdrop-blur-sm z-40" />}
 
       <div className="flex-1 relative z-50" ref={dropdownRef}>
-        <div className="w-full bg-gradient-to-br from-white/5 to-white/15 opacity-75 p-2 shadow-md rounded-lg backdrop-blur-lg">
+        <div className="w-full bg-gradient-to-br from-white/10 to-white/25 opacity-90 p-2 shadow-xl rounded-lg backdrop-blur-lg border border-white/20">
           <form>
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white w-4 h-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white w-4 h-4 drop-shadow-md" />
 
             {/* Indicador de ciudad actual mejorado */}
             <div className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm rounded-md p-2 flex items-center gap-1 shadow-sm border border-white/20">
@@ -136,7 +136,7 @@ export default function SearchBar({
             <input
               type="search"
               placeholder="Buscar ciudad..."
-              className="w-full text-base bg-transparent focus:outline-none pl-8 pr-36 py-2 text-white placeholder-white/70"
+              className="w-full text-base bg-transparent focus:outline-none pl-8 pr-36 py-2 text-white placeholder-white/70 drop-shadow-md"
               aria-label="Buscar ciudad"
               onChange={handleSearch}
               onFocus={handleInputFocus}

@@ -64,14 +64,14 @@ export default function MainCard({
   }, [weatherData, setBackgroundColor]);
 
   return (
-    <div className="w-full max-w-sm sm:max-w-2xl md:max-w-3xl mx-auto bg-gradient-to-br from-white/5 to-white/15 opacity-75 p-3 sm:p-4 md:p-6 lg:p-8 shadow-md rounded-xl backdrop-blur-md">
+    <div className="w-full max-w-sm sm:max-w-2xl md:max-w-3xl mx-auto bg-gradient-to-br from-white/10 to-white/25 opacity-90 p-3 sm:p-4 md:p-6 lg:p-8 shadow-xl rounded-xl backdrop-blur-lg border border-white/20">
       {/* Time */}
       <div className="absolute top-4 right-4 text-white text-sm font-medium">
         <div className="flex flex-col items-end text-right">
-          <span className="text-white text-sm font-semibold">
+          <span className="text-white text-sm font-semibold drop-shadow-lg">
             {currentTime || "..."}
           </span>
-          <span className="text-white/80 text-xs">{currentDate || "..."}</span>
+          <span className="text-white/80 text-xs drop-shadow-md">{currentDate || "..."}</span>
         </div>
       </div>
       {/* Main weather */}
@@ -90,19 +90,19 @@ export default function MainCard({
         </div>
         {/* Temperature and description */}
         <div className="flex flex-col items-center text-center">
-          <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-thin text-white leading-none">
+          <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-thin text-white leading-none drop-shadow-2xl">
             {loading
               ? "..."
               : `${Math.round(
                   convertTemperature(weatherData?.main?.temp || 0, isCelsius)
                 )}°`}
           </div>
-          <div className="capitalize text-white text-sm sm:text-base md:text-lg font-semibold mt-1">
+          <div className="capitalize text-white text-sm sm:text-base md:text-lg font-semibold mt-1 drop-shadow-lg">
             {loading
               ? "..."
               : weatherData?.weather[0]?.description || "Desconocido"}
           </div>
-          <div className="text-white text-xs sm:text-sm mt-1">
+          <div className="text-white text-xs sm:text-sm mt-1 drop-shadow-md">
             {loading
               ? "..."
               : `Sensación térmica ${Math.round(

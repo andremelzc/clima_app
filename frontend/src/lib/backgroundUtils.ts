@@ -5,12 +5,12 @@ const backgrounds: Record<string, string> = {
     sunny: "bg-gradient-to-t from-[#f7b733] from-60% to-[#4fc3f7] to-100%", // dorado a azul cielo (templado)
     clear: "bg-gradient-to-t from-[#2c3e50] from-60% to-[#3498db] to-100%", // noche despejada
 
-    // Condiciones específicas (siempre tienen prioridad)
-    cloudy: "bg-gradient-to-t from-[#bdc3c7] from-60% to-[#95a5a6] to-100%", // nublado
+    // Condiciones específicas (siempre tienen prioridad) - Mejorados para mejor contraste
+    cloudy: "bg-gradient-to-t from-[#7f8c8d] from-60% to-[#95a5a6] to-100%", // nublado más oscuro
     rainy: "bg-gradient-to-t from-[#34495e] from-60% to-[#2c3e50] to-100%", // lluvia
     stormy: "bg-gradient-to-t from-[#2c3e50] from-60% to-[#8e44ad] to-100%", // tormenta
-    snowy: "bg-gradient-to-t from-[#e8f4f8] from-60% to-[#d6eaf8] to-100%", // nieve
-    foggy: "bg-gradient-to-t from-[#ecf0f1] from-60% to-[#bdc3c7] to-100%", // niebla
+    snowy: "bg-gradient-to-t from-[#a8c8d8] from-60% to-[#c8d6e5] to-100%", // nieve con más contraste
+    foggy: "bg-gradient-to-t from-[#95a5a6] from-60% to-[#bdc3c7] to-100%", // niebla más oscura
   };
 
 export function getBackgroundColor({temperature, description}: {temperature: number; description: string}): string {
