@@ -48,20 +48,9 @@ export default function SearchBar({
     country: string;
     coord: { lat: number; lon: number };
   }) => {
-    console.log("Selected city:", city);
-    console.log("Setting dataSelected to:", {
-      city: city.name,
-      country: city.country,
-    });
     setIsOpen(false);
     setSearchQuery(city.name); // Actualizar el input con la ciudad seleccionada
     setDataSelected({
-      city: city.name,
-      country: city.country,
-      lat: city.coord.lat,
-      lon: city.coord.lon,
-    });
-    console.log("Data selected updated:", {
       city: city.name,
       country: city.country,
       lat: city.coord.lat,

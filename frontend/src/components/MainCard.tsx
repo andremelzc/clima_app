@@ -4,13 +4,19 @@ import { Sunrise, Sunset, Droplets, Wind, Gauge, Eye } from "lucide-react";
 import { getCurrentWeather, convertUnixToDate } from "../services/weatherApi";
 import { convertTemperature } from "../lib/temperatureUtils";
 import { useCityTime } from "../hooks/useCityTime";
+import { getBackgroundColor } from "../lib/backgroundUtils";
 
 interface MainCardProps {
   dataSelected: { city: string; country: string; lat: number; lon: number };
   isCelsius: boolean;
+  setBackgroundColor: (color: string) => void;
 }
 
-export default function MainCard({ dataSelected, isCelsius }: MainCardProps) {
+export default function MainCard({
+  dataSelected,
+  isCelsius,
+  setBackgroundColor,
+}: MainCardProps) {
   const [weatherData, setWeatherData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -44,6 +50,18 @@ export default function MainCard({ dataSelected, isCelsius }: MainCardProps) {
   useEffect(() => {
     fetchWeatherData();
   }, [dataSelected]);
+
+  // Actualizar background cuando weatherData cambie
+  useEffect(() => {
+    if (weatherData?.main?.temp && weatherData?.weather?.[0]?.description) {
+      setBackgroundColor(
+        getBackgroundColor({
+          temperature: weatherData.main.temp,
+          description: weatherData.weather[0].description,
+        })
+      );
+    }
+  }, [weatherData, setBackgroundColor]);
 
   return (
     <div className="w-full max-w-sm sm:max-w-2xl md:max-w-3xl mx-auto bg-gradient-to-br from-white/5 to-white/15 opacity-75 p-3 sm:p-4 md:p-6 lg:p-8 shadow-md rounded-xl backdrop-blur-md">
