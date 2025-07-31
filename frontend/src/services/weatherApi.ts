@@ -1,6 +1,8 @@
-const PORT_BACKEND = import.meta.env.PORT_BACKEND || 3000;
-const API_BASE =
-  import.meta.env.VITE_API_BASE || `http://localhost:${PORT_BACKEND}`;
+// Detectar automáticamente el ambiente
+const isProduction = import.meta.env.PROD;
+const API_BASE = isProduction 
+  ? 'https://clima-app-m1hv.onrender.com' 
+  : `http://localhost:3000`;
 
 export const getCurrentWeather = async (city: string, country: string) => {
   const response = await fetch(`${API_BASE}/api/weather?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}`);
