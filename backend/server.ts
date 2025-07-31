@@ -94,7 +94,10 @@ app.get("/api/forecast", async (req: Request, res: Response) => {
 
 app.get("/api/cities/search", async (req: Request, res: Response) => {
   const query = req.query.q as string;
-  const cities = require("./data/city.list.json");
+  // Usar path.join para resolver la ruta correctamente
+  const path = require('path');
+  const citiesPath = path.join(__dirname, '../data/city.list.json');
+  const cities = require(citiesPath);
 
   if (!query) {
     return res.status(400).json({ error: "Query parameter 'q' is required" });
