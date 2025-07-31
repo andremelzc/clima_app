@@ -10,16 +10,11 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": false,
     "resolveJsonModule": true,
-    "types": ["node"],
     "moduleResolution": "node",
     "declaration": false,
     "removeComments": true,
     "noImplicitAny": false,
-    "allowJs": true,
-    "suppressImplicitAnyIndexErrors": true
-  },
-  "ts-node": {
-    "esm": false
+    "allowJs": true
   },
   "include": [
     "**/*.ts"
