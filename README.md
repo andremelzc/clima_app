@@ -69,6 +69,7 @@ To run both the backend and frontend simultaneously:
 ```bash
 pnpm dev
 ```
+It may take a few seconds to load both.
 
 ## Deployment
 
@@ -83,7 +84,3 @@ The frontend is deployed on **Vercel**. You can access it at:
 ```
 https://clima-app-opal.vercel.app/
 ```
-
-## License
-This project is licensed under the MIT License.
-
